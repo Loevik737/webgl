@@ -15,7 +15,6 @@ function initBuffers(gl, positions, colors) {
   // operations to from here out.
 
   gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-  gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
 
   // Now create an array of positions for the square.
   // Now pass the list of positions into WebGL to build the
@@ -25,10 +24,13 @@ function initBuffers(gl, positions, colors) {
   gl.bufferData(gl.ARRAY_BUFFER,
                 new Float32Array(positions),
                 gl.STATIC_DRAW);
+  gl.bindBuffer(gl.ARRAY_BUFFER, null);
 
+  gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
   gl.bufferData(gl.ARRAY_BUFFER,
                 new Float32Array(colors),
                 gl.STATIC_DRAW);
+  gl.bindBuffer(gl.ARRAY_BUFFER, null);
 
   return {
     position: positionBuffer,

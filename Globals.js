@@ -1,6 +1,6 @@
 const canvas = document.querySelector('#glcanvas'),
 		  gl = canvas.getContext('webgl'),
-		  vertexCount = 10;
+		  vertexCount = 5;
 
 var   shaderProgram = null,
   	  programInfo = null,
@@ -20,7 +20,7 @@ const fieldOfView = 45 * Math.PI / 180,   // in radians
 			width = canvas.width,
 			height = canvas.height,
  			aspect = width / height,
- 			zNear = 0.1,
+ 			zNear = 0.01,
  			zFar = 100.0,
  			projectionMatrix = mat4.create();
 			modelViewMatrix = mat4.create();

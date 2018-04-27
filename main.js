@@ -33,23 +33,26 @@ function main() {
 
   // Here's where we call the routine that builds all the
   // objects we'll be drawing.
-  let positions = [],
+  let positions = [74.07701667, 21.46850000,
+                   74.22750000, 21.51758333,
+                   71.01451667, 22.65705000,
+                   71.02196667, 10.83523333,
+                   73.95546667, 20.93021667],
       colors = [],
-      rngPos = d3.randomUniform(-1, 1),
-      rngCol = d3.randomUniform(0, 1);
+      rngPos = function(){return Math.random() * (1 - (-1)) + -1},
+      rngCol =function(){return Math.random() * (1 - 0) + 0};
 
-  for(let i = 0; i<vertexCount; i++){
-    positions.push(rngPos());
-    positions.push(rngPos());
-    colors.push(rngCol());
-    colors.push(rngCol());
-    colors.push(rngCol());
-    colors.push(rngCol());
+  for(let i = 0; i<vertexCount+4; i++){
+      let pixles = LatLongToPixelXY(positions[i], positions[i+1]);
+      positions[i] = pixles[0]/width;
+      positions[i+1] = pixles[1]/height;
+      colors.push(rngCol());
+      colors.push(1.0);
+      colors.push(rngCol());
+      colors.push(1.0);
   }
-  
+  console.log(positions)
   buffers = initBuffers(gl, positions, colors);
-
-  gl.useProgram(programInfo.program);
 
   {
     const posNumComponents = 2;
@@ -59,6 +62,7 @@ function main() {
     const stride = 0;
     const offset = 0;
 
+    gl.enableVertexAttribArray(programInfo.attribLocations.vertexPosition);
     gl.bindBuffer(gl.ARRAY_BUFFER, buffers.position);
     gl.vertexAttribPointer(
         programInfo.attribLocations.vertexPosition,
@@ -67,8 +71,9 @@ function main() {
         normalize,
         stride,
         offset);
-    gl.enableVertexAttribArray(programInfo.attribLocations.vertexPosition);
+    gl.bindBuffer(gl.ARRAY_BUFFER, null);
 
+    gl.enableVertexAttribArray(programInfo.attribLocations.vertexColor);
     gl.bindBuffer(gl.ARRAY_BUFFER, buffers.color);
     gl.vertexAttribPointer(
         programInfo.attribLocations.vertexColor,
@@ -77,9 +82,10 @@ function main() {
         normalize,
         stride,
         offset);
-    gl.enableVertexAttribArray(programInfo.attribLocations.vertexColor);
+    gl.bindBuffer(gl.ARRAY_BUFFER, null);
 
   }
+  gl.useProgram(programInfo.program);
 
   renderLoop();
 }
