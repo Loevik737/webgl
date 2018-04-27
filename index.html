@@ -1,19 +1,27 @@
 <!doctype html>
 <html lang="en">
+
   <head>
     <meta charset="utf-8">
     <title>WebGL Demo</title>
   </head>
 
-  <body>
-    <canvas id="glcanvas" width="1350" height="720"></canvas>
+  <body onload="main()">
+    <canvas id="glcanvas"></canvas>
   </body>
+
   <script src="https://d3js.org/d3.v4.min.js"></script>
-  <script type="text/javascript" src="Globals.js"></script>
   <script type="text/javascript" src="helpers/gl-matrix.js"></script>
+
+  <script type="text/javascript" src="Globals.js"></script>
+
+  <script type="text/javascript" src="shaders/vertex.js" ></script>
+  <script type="text/javascript" src="shaders/fragment.js" ></script>
+
   <script type="text/javascript" src="components/buffers.js"></script>
   <script type="text/javascript" src="components/shaderProgram.js"></script>
   <script type="text/javascript" src="components/draw.js"></script>
   <script type="text/javascript" src="components/render.js"></script>
+
   <script type="text/javascript" src="main.js"></script>
 </html>

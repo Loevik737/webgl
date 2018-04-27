@@ -4,16 +4,18 @@
 // Initialize the buffers we'll need. For this demo, we just
 // have one object -- a simple two-dimensional square.
 //
-function initBuffers(gl, positions) {
+function initBuffers(gl, positions, colors) {
 
   // Create a buffer for the square's positions.
 
   const positionBuffer = gl.createBuffer();
+  const colorBuffer = gl.createBuffer();
 
   // Select the positionBuffer as the one to apply buffer
   // operations to from here out.
 
   gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+  gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
 
   // Now create an array of positions for the square.
   // Now pass the list of positions into WebGL to build the
@@ -24,7 +26,12 @@ function initBuffers(gl, positions) {
                 new Float32Array(positions),
                 gl.STATIC_DRAW);
 
+  gl.bufferData(gl.ARRAY_BUFFER,
+                new Float32Array(colors),
+                gl.STATIC_DRAW);
+
   return {
     position: positionBuffer,
+    color : colorBuffer,
   };
 }
