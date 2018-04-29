@@ -6,11 +6,14 @@ function main() {
     return;
   }
 
-  gl.clearColor(0.0, 0.0, 0.0, 1.0);  // Clear to black, fully opaque
+  gl.clearColor(0.0, 0.0, 0.0, 0.0);  // Clear to black, fully opaque
   gl.clearDepth(1.0);                 // Clear everything
   gl.enable(gl.DEPTH_TEST);           // Enable depth testing
   gl.depthFunc(gl.LEQUAL);            // Near things obscure far things
   gl.viewport(0, 0, width, height);
+  gl.enable(gl.BLEND);
+  //gl.blendFunc(gl.SRC_COLOR, gl.DST_COLOR);
+  gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
 
   // Initialize a shader program; this is where all the lighting
   // for the vertices and so forth is established.
@@ -31,31 +34,29 @@ function main() {
     },
   };
 
-  // Here's where we call the routine that builds all the
-  // objects we'll be drawing.
-  let positions = [74.07701667, 21.46850000,
-                   74.22750000, 21.51758333,
-                   71.01451667, 22.65705000,
-                   71.02196667, 10.83523333,
-                   73.95546667, 20.93021667],
+  let positions = [],
       colors = [],
       rngPos = function(){return Math.random() * (1 - (-1)) + -1},
       rngCol =function(){return Math.random() * (1 - 0) + 0};
 
-  for(let i = 0; i<vertexCount+4; i++){
-      let pixles = LatLongToPixelXY(positions[i], positions[i+1]);
-      positions[i] = pixles[0]/width;
-      positions[i+1] = pixles[1]/height;
-      colors.push(rngCol());
-      colors.push(1.0);
-      colors.push(rngCol());
-      colors.push(1.0);
+  for(let i = 0; i<vertexCount; i++){
+      positions.push(rngPos());
+      positions.push(rngPos());
+      positions.push(rngPos());
+      if(positions[positions.length-3] >= 0){
+          colors.push.apply(colors, COLORS.RED);
+      }
+      else{
+          colors.push.apply(colors, COLORS.BLUE);
+      }
   }
+  console.log(colors)
   console.log(positions)
+
   buffers = initBuffers(gl, positions, colors);
 
   {
-    const posNumComponents = 2;
+    const posNumComponents = 3;
     const colNumComponents = 4;
     const type = gl.FLOAT;
     const normalize = false;
